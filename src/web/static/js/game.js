@@ -11,7 +11,8 @@ class Game {
             gameStarted: false,
             pendingOptions: null
         };
-        this.apiBaseUrl = '/api/game';
+        this.apiBaseUrl = '/api/game';   // For new/load/save
+        this.chatApiUrl = '/api/chat';   // For chat-based actions
     }
 
     async startNewGame() {
@@ -24,37 +25,26 @@ class Game {
 
             if (!response.ok) throw new Error('Failed to start game');
 
-            // Clear existing state
-            this.state = {
-                currentLocation: null,
-                locationHistory: [],
-                activeQuests: [],
-                party: [],
-                gameStarted: true
-            };
+            const data = await response.json();
 
+            // Clear existing chat and UI state
             chat.clearChat();
             ui.clearAll();
 
-            // Add initial game master message
-            chat.addMessage('Game Master',
-                'Welcome to your D&D adventure! I will be your Game Master.' +
-                '\n\nFirst, let\'s create your character. What class would you like to play?' +
-                '\n\nAvailable classes are: Barbarian, Bard, Cleric, Druid, Fighter, Monk, ' +
-                'Paladin, Ranger, Rogue, Sorcerer, Warlock, and Wizard.'
-            );
+            // Show messages from server response
+            if (data.messages) {
+                data.messages.forEach(msg => {
+                    chat.addMessage(msg.sender, msg.content, msg.type || 'normal');
+                });
+            }
 
-            // Show class options as clickable choices
-            const classOptions = [
-                'Barbarian', 'Bard', 'Cleric', 'Druid', 'Fighter', 'Monk',
-                'Paladin', 'Ranger', 'Rogue', 'Sorcerer', 'Warlock', 'Wizard'
-            ].map(className => ({
-                text: className,
-                class: className
-            }));
+            // Merge any stateUpdate from server into local state
+            if (data.stateUpdate) {
+                Object.assign(this.state, data.stateUpdate);
+                ui.updateGameState(this.state);
+            }
 
-            chat.addQuestOptions(classOptions);
-
+            this.state.gameStarted = true;
             ui.enableGameControls();
         } catch (error) {
             ui.showError('Failed to start new game');
@@ -82,22 +72,23 @@ class Game {
 
     async loadGame(file) {
         try {
-            const formData = new FormData();
-            formData.append('file', file);
+            const fileData = await file.text();
+            const savedState = JSON.parse(fileData);
 
             const response = await fetch(`${this.apiBaseUrl}/load`, {
                 method: 'POST',
-                body: formData
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(savedState)
             });
 
-            if (response.ok) {
-                const gameState = await response.json();
-                this.initializeGame(gameState);
-                ui.updateGameState(this.state);
-                ui.showSuccess('Game loaded successfully');
-            } else {
+            if (!response.ok) {
                 throw new Error('Load failed');
             }
+
+            const gameState = await response.json();
+            this.initializeGame(gameState);
+            ui.updateGameState(this.state);
+            ui.showSuccess('Game loaded successfully');
         } catch (error) {
             ui.showError('Failed to load game');
         }
@@ -109,14 +100,19 @@ class Game {
         chat.addMessage('You', input);
 
         try {
-            const response = await fetch(`${this.apiBaseUrl}/action`, {
+            const response = await fetch(this.chatApiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: input })
+                body: JSON.stringify({ userMessage: input })
             });
 
+            if (!response.ok) {
+                ui.showError('Server returned an error while processing your action');
+                return;
+            }
+
             const result = await response.json();
-            this.processGameResponse(result);
+            this.processChatResponse(result);
         } catch (error) {
             ui.showError('Failed to process action');
         }
@@ -128,6 +124,8 @@ class Game {
         const selectedOption = this.state.pendingOptions[optionIndex];
         this.state.pendingOptions = null;
 
+        chat.addMessage('You', `I choose: ${selectedOption.text}`);
+
         try {
             const response = await fetch(`${this.apiBaseUrl}/select-option`, {
                 method: 'POST',
@@ -135,10 +133,42 @@ class Game {
                 body: JSON.stringify({ optionIndex, option: selectedOption })
             });
 
+            if (!response.ok) {
+                ui.showError('Server returned an error while processing your option choice');
+                return;
+            }
+
             const result = await response.json();
             this.processGameResponse(result);
         } catch (error) {
             ui.showError('Failed to process option selection');
+        }
+    }
+
+    processChatResponse(response) {
+        if (response.stateUpdate) {
+            Object.assign(this.state, response.stateUpdate);
+            ui.updateGameState(this.state);
+        }
+
+        if (response.messages) {
+            response.messages.forEach(msg => {
+                chat.addMessage(msg.sender, msg.content, 'normal');
+            });
+        }
+
+        if (response.diceRolls) {
+            response.diceRolls.forEach(roll => {
+                chat.addSystemMessage(`🎲 ${roll.description}: ${roll.result}`, 'info');
+            });
+        }
+
+        if (response.questUpdates) {
+            this.updateQuests(response.questUpdates);
+        }
+
+        if (response.locationUpdate) {
+            this.updateLocation(response.locationUpdate);
         }
     }
 
@@ -150,7 +180,7 @@ class Game {
 
         if (response.messages) {
             response.messages.forEach(msg => {
-                chat.addMessage(msg.sender, msg.content, msg.type);
+                chat.addMessage(msg.sender, msg.content, msg.type || 'normal');
             });
         }
 
@@ -210,6 +240,12 @@ class Game {
         if (gameState.party) {
             chat.initializeParty(gameState.party);
         }
+    }
+
+    quitGame() {
+        this.state.gameStarted = false;
+        chat.addSystemMessage('You have quit the game.', 'warning');
+        ui.disableGameControls();
     }
 }
 

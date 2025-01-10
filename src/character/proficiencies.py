@@ -62,7 +62,7 @@ CLASS_SKILLS = {
     'rogue': {
         'num_choices': 4,
         'options': ['acrobatics', 'athletics', 'deception', 'insight', 'intimidation', 'investigation', 'perception',
-                   'performance', 'persuasion', 'sleight_of_hand', 'stealth']
+                    'performance', 'persuasion', 'sleight_of_hand', 'stealth']
     },
     'sorcerer': {
         'num_choices': 2,

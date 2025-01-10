@@ -27,7 +27,7 @@ class ChatInterface {
             'warlock', 'wizard'
         ];
 
-        const class_name = className.toLowerCase();
+        const class_name = className?.toLowerCase() || 'default';
         if (validClasses.includes(class_name)) {
             return `${this.avatarBaseUrl}${class_name}.png`;
         }
@@ -40,14 +40,15 @@ class ChatInterface {
         messageDiv.className = `message fade-in ${messageClass}`;
 
         messageDiv.innerHTML = `
-            <div class="flex items-start space-x-3">
-                <img src="${this._getAvatar(sender)}"
-                     alt="${sender}"
-                     class="avatar ${messageClass}-avatar"
-                     onerror="this.src='${this.avatarBaseUrl}default.png'">
-                <div class="flex-1">
-                    <div class="font-bold text-gray-900">${sender}</div>
-                    <div class="${this._getTextClass(type)}">${this._formatContent(content)}</div>
+            <div class="message-wrapper">
+                <div class="message-inner">
+                    <img src="${this._getAvatar(sender)}"
+                        alt="${sender}"
+                        class="avatar ${messageClass}-avatar">
+                    <div class="message-content">
+                        <div class="font-bold text-gray-900">${sender}</div>
+                        <div class="${this._getTextClass(type)}">${this._formatContent(content)}</div>
+                    </div>
                 </div>
             </div>
         `;
@@ -94,6 +95,7 @@ class ChatInterface {
 
     _getAvatar(sender) {
         if (sender === 'Game Master') return `${this.avatarBaseUrl}gm.png`;
+        if (sender === 'You') return `${this.avatarBaseUrl}default.png`;
         const member = this.partyMembers.get(sender);
         return member ? member.avatar : `${this.avatarBaseUrl}default.png`;
     }
@@ -124,11 +126,21 @@ class ChatInterface {
     }
 
     _formatContent(content) {
-        return content
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            headerIds: false,
+            mangle: false
+        });
+
+        // Custom tokens
+        content = content
             .replace(/\*\*danger:(.*?)\*\*/g, '<span class="text-red-600 font-bold">$1</span>')
             .replace(/\*\*warning:(.*?)\*\*/g, '<span class="text-yellow-600 font-bold">$1</span>')
-            .replace(/\*\*info:(.*?)\*\*/g, '<span class="text-blue-600 font-bold">$1</span>')
-            .replace(/\n/g, '<br>');
+            .replace(/\*\*info:(.*?)\*\*/g, '<span class="text-blue-600 font-bold">$1</span>');
+
+        // Parse markdown
+        return marked.parse(content);
     }
 
     _scrollToBottom() {

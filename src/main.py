@@ -2,19 +2,17 @@ from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Dict
 import json
 import os
 
-from .game_master import GameMaster
-from .game_state import GameState
+from src.game_master_web import GameMasterWeb
+from src.game_state import GameState
 
 app = FastAPI()
 
-# Serve static files
 app.mount("/static", StaticFiles(directory="src/web/static"), name="static")
 
-# Game state models
 class GameAction(BaseModel):
     action: str
 
@@ -30,7 +28,17 @@ class GameResponse(BaseModel):
     questUpdates: Optional[List[dict]]
     locationUpdate: Optional[dict]
 
-# Game instance
+# New chat models
+class ChatRequest(BaseModel):
+    userMessage: str
+
+class ChatResponse(BaseModel):
+    messages: List[Dict[str, str]]
+    diceRolls: Optional[List[dict]] = None
+    questUpdates: Optional[List[dict]] = None
+    locationUpdate: Optional[dict] = None
+    stateUpdate: Optional[dict] = None
+
 game_master = None
 
 @app.get("/")
@@ -40,7 +48,7 @@ async def read_root():
 @app.post("/api/game/new")
 async def new_game():
     global game_master
-    game_master = GameMaster()
+    game_master = GameMasterWeb()
     initial_state = game_master.start_game()
     return initial_state
 
@@ -76,7 +84,7 @@ async def save_game(state: dict):
 async def load_game(saved_state: dict):
     global game_master
     try:
-        game_master = GameMaster()
+        game_master = GameMasterWeb()
         game_state = game_master.load_game_state(saved_state)
         return game_state
     except Exception as e:
@@ -88,3 +96,22 @@ async def start_character_creation():
         raise HTTPException(status_code=400, detail="Game not started")
 
     return game_master.start_character_creation()
+
+# New chat endpoint
+@app.post("/api/chat", response_model=ChatResponse)
+async def chat(chat_req: ChatRequest):
+    if not game_master:
+        raise HTTPException(status_code=400, detail="Game not started")
+
+    user_message = chat_req.userMessage
+    result = game_master.handle_action(user_message)
+
+    return ChatResponse(
+        messages=[
+            {"sender": "Game Master", "content": result["messages"][0]["content"]},
+        ],
+        diceRolls=result.get("diceRolls"),
+        questUpdates=result.get("questUpdates"),
+        locationUpdate=result.get("locationUpdate"),
+        stateUpdate=result.get("stateUpdate")
+    )
