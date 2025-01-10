@@ -1,12 +1,26 @@
+"""
+Text formatting utilities for console output
+"""
 from colorama import init, Fore, Back, Style
-from termcolor import colored
 import textwrap
 import os
 
-# Initialize colorama
+# Initialize colorama for cross-platform color support
 init()
 
 class TextFormatter:
+    """Handles text formatting and coloring for console output"""
+
+    # Color schemes
+    COLORS = {
+        'header': Fore.BLUE,
+        'success': Fore.GREEN,
+        'error': Fore.RED,
+        'warning': Fore.YELLOW,
+        'info': Fore.CYAN,
+        'reset': Style.RESET_ALL
+    }
+
     @staticmethod
     def wrap_text(text: str, width: int = 80) -> str:
         """Wrap text to specified width"""
@@ -58,14 +72,33 @@ class TextFormatter:
         return f"\n{Fore.BLUE}{header}{Style.RESET_ALL}\n"
 
     @staticmethod
-    def menu_option(key: str, description: str) -> str:
+    def menu_option(key: str, description: str = "") -> str:
         """Format menu options"""
-        return f"{Fore.YELLOW}{key}{Style.RESET_ALL}: {description}"
+        if description:
+            return f"{Fore.YELLOW}{key}{Style.RESET_ALL}: {description}"
+        return f"{Fore.YELLOW}{key}{Style.RESET_ALL}"
 
     @staticmethod
     def player_status(player_name: str, status: str) -> str:
         """Format player status"""
         return f"{Fore.CYAN}{player_name}{Style.RESET_ALL} - {status}"
+
+    @staticmethod
+    def stat_display(stat_name: str, value: int, modifier: int = None) -> str:
+        """Format stat display"""
+        if modifier is not None:
+            return f"{Fore.CYAN}{stat_name}: {value} ({'+' if modifier >= 0 else ''}{modifier}){Style.RESET_ALL}"
+        return f"{Fore.CYAN}{stat_name}: {value}{Style.RESET_ALL}"
+
+    @staticmethod
+    def spell_text(text: str) -> str:
+        """Format spell-related text"""
+        return f"{Fore.BLUE}{text}{Style.RESET_ALL}"
+
+    @staticmethod
+    def condition_text(condition: str, text: str) -> str:
+        """Format condition effects"""
+        return f"{Fore.RED}{condition}: {Fore.YELLOW}{text}{Style.RESET_ALL}"
 
     @staticmethod
     def clear_screen():

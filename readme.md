@@ -1,24 +1,51 @@
 # D&D Command Line Adventure
 
-A command-line D&D game that uses Ollama's API to create an AI game master experience.
+A text-based Dungeons & Dragons game that uses Ollama's LLM to create an AI Game Master and companion experience. Play D&D with AI-controlled party members in an interactive, dynamic environment.
+
+## Features
+
+### Character Creation
+- Create characters from all 12 standard D&D 5e classes
+- Automatic stat generation using 4d6 drop lowest method
+- Class-appropriate skill proficiencies and starting equipment
+- Detailed character stats and abilities
+
+### AI Companions
+- 2-3 AI-controlled party members
+- Class-appropriate behavior and responses
+- Interactive party dynamics
+- Context-aware actions and suggestions
+
+### Combat System
+- Turn-based combat following D&D 5e rules
+- Automatic dice rolling and modifier calculation
+- Combat conditions and status effects
+- Weapon and spell damage calculations
+
+### Game Features
+- Dynamic environment generation
+- Interactive storytelling
+- Save/load game functionality
+- Colored text interface
+- Natural language input processing
 
 ## Prerequisites
 
 - Python 3.8 or higher
-- Ollama installed and running locally (with llama2 model)
-- pip (Python package manager)
+- Ollama installed and running locally (with llama3.2 model)
+- Terminal with color support
 
 ## Installation
 
-1. Clone this repository:
+1. Clone the repository:
 ```bash
 git clone <repository-url>
 cd dnd-game
 ```
 
-2. Create a virtual environment (recommended):
+2. Create a virtual environment:
 ```bash
-python3 -m venv venv
+python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
@@ -32,47 +59,109 @@ pip install -r requirements.txt
 ollama run llama3.2
 ```
 
-## Running the Game
+## Usage
 
-To start the game, run:
+1. Start the game:
 ```bash
 python main.py
 ```
 
-## Game Commands
+2. Follow the character creation prompts to create your character.
 
-- Type actions in natural language to interact with the game
-- `save` - Save your current game progress
-- `quit` - Exit the game
-- `help` - Show available commands and tips
+3. The game will generate AI companions and start your adventure.
 
-## Features
+### Available Commands
 
-- AI-powered game master using llama2
-- Dynamic story generation
-- Dice rolling system
-- Save/load game functionality
-- Multiple player support
-- D&D 5e rules integration
+- `quit`: End the game
+- `save`: Save your current progress
+- `help`: Show available commands and tips
+- `status`: Show your character's current stats
+
+### Action Examples
+
+- Combat: `I attack the goblin with my sword`
+- Exploration: `I search the room for traps`
+- Social: `I try to persuade the merchant to lower their prices`
+- Skills: `I attempt to climb the wall`
 
 ## Project Structure
 
 ```
 dnd_game/
-├── README.md
-├── requirements.txt
-├── config/
-│   └── game_settings.py
 ├── src/
-│   ├── __init__.py
-│   ├── game_master.py
-│   ├── ollama_client.py
-│   ├── dice.py
-│   ├── game_state.py
-│   └── prompts.py
-└── main.py
+│   ├── ai/              # AI companion behavior
+│   ├── character/       # Character creation and management
+│   ├── combat/          # Combat system
+│   ├── utils/           # Utilities and helpers
+│   ├── game_master.py   # Main game orchestrator
+│   └── game_state.py    # Game state management
+```
+
+## Game Mechanics
+
+### Character Classes
+- All standard D&D 5e classes supported
+- Class-specific abilities and proficiencies
+- Unique starting equipment and features
+
+### Combat
+- Initiative system
+- Attack rolls with advantage/disadvantage
+- Damage calculations
+- Status effects and conditions
+
+### Skill System
+- Ability checks
+- Skill proficiencies
+- Saving throws
+- Special ability usage
+
+## Development
+
+### Adding New Features
+
+1. Character Classes:
+   - Add new classes in `character/classes.py`
+   - Define class features and proficiencies
+
+2. Combat Actions:
+   - Add new actions in `combat/actions.py`
+   - Define validation rules in `combat/validation.py`
+
+3. AI Behaviors:
+   - Add responses in `ai/responses.py`
+   - Define actions in `ai/actions.py`
+
+### Running Tests
+```bash
+# TODO: Add testing instructions
 ```
 
 ## Contributing
 
-Feel free to submit issues and enhancement requests!
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Based on Dungeons & Dragons 5th Edition
+- Uses Ollama's implementation of LLaMA3.2 for AI interactions
+- Inspired by classic text adventure games
+
+## TODO
+
+- [ ] Add more character classes and features
+- [ ] Implement inventory management system
+- [ ] Add spellcasting system
+- [ ] Create character leveling system
+- [ ] Add more complex combat scenarios
+- [ ] Implement character progression
+- [ ] Add quest tracking system
+- [ ] Create campaign management tools
