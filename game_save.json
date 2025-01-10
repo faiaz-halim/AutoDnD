@@ -1,0 +1,76 @@
+{
+  "num_players": 4,
+  "players": [
+    {
+      "name": "Balrog",
+      "character_class": "Rogue",
+      "level": 1,
+      "hp": 0,
+      "max_hp": 0,
+      "stats": {
+        "strength": 0,
+        "dexterity": 0,
+        "constitution": 0,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": 0
+      }
+    },
+    {
+      "name": "Minkx",
+      "character_class": "Paladin",
+      "level": 1,
+      "hp": 0,
+      "max_hp": 0,
+      "stats": {
+        "strength": 0,
+        "dexterity": 0,
+        "constitution": 0,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": 0
+      }
+    },
+    {
+      "name": "Nutmeg",
+      "character_class": "Cleric",
+      "level": 1,
+      "hp": 0,
+      "max_hp": 0,
+      "stats": {
+        "strength": 0,
+        "dexterity": 0,
+        "constitution": 0,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": 0
+      }
+    },
+    {
+      "name": "Abbath",
+      "character_class": "Wizard",
+      "level": 1,
+      "hp": 0,
+      "max_hp": 0,
+      "stats": {
+        "strength": 0,
+        "dexterity": 0,
+        "constitution": 0,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": 0
+      }
+    }
+  ],
+  "current_location": "",
+  "environment_description": "Welcome to \"The Mists of Ravenshire\"\n\n**Starting Location:** The Whispering Inn, a rustic tavern nestled between the rolling hills and dense forests of Ravenshire, a small village on the edge of the Misty Mountains.\n\n**Basic Quest:** The Missing Harvest: The villagers of Ravenshire are in dire need of assistance. Their annual harvest festival has been disrupted by the sudden disappearance of their most prized crop: a rare, magical herb known as Starlight's Tear. The herb is essential for brewing potions and healing spells. The villagers believe that a group of mischievous fey have stolen the crop.\n\n**Current Situation:** As you arrive at The Whispering Inn, the villagers are frantically preparing for the harvest festival. The innkeeper, a stout dwarf named Grimbold, approaches you with a worried expression. \"Friends, I've got a bad feeling about this. We've had strange occurrences in the village lately \u2013 tools gone missing, strange noises in the night, and some folks have even reported seeing shadowy figures lurking around the forest. I suspect the fey are up to no good.\"\n\nGrimbold hands you a rough map of the surrounding area, pointing out several locations where the Starlight's Tear was last seen. \"Be careful, travelers. The Misty Mountains can be treacherous, especially for those who don't know them. You'll need to navigate through the Whispering Woods and deal with whatever dangers lie within.\"\n\nAs you prepare to set out, you notice a sense of unease in the air. The villagers seem on edge, and the wind carries an eerie, whispery sound that seems to be coming from all directions.\n\nWhat will you do?",
+  "quest_description": "",
+  "current_enemies": [],
+  "game_history": [
+    "Game started",
+    "Balrog: ask villagers what is wrong\nOther players' thoughts:\nMinkx: i support it\nNutmeg: i don't care\nAbbath: i am cautious about it",
+    "GM: As you approach the villagers, they gather around, their faces filled with concern. The village elder, a wise woman named Elara, steps forward to share her knowledge.\n\n\"Friends, we've been preparing for this day for months. Our harvest festival is not just about celebration; it's about ensuring our crops thrive and our people stay healthy. Starlight's Tear was the key to our success this year. Without it, our brews will be weak, and our spells... well, they won't work at all.\"\n\nThe villagers share their stories of strange occurrences: tools vanishing, eerie whispers in the night, and shadowy figures lurking around the forest. Grimbold adds that some folks have reported seeing fey creatures flitting about the woods, carrying small pouches or twigs.\n\nYou notice a few villagers eyeing you with curiosity, wondering what brings outsiders to their village. The atmosphere is tense, but the villagers seem willing to share their concerns and offer assistance.\n\nRoll a Wisdom (Insight) check to see if you pick up on any subtle cues or emotions among the villagers.",
+    "Minkx: roll a wisdom check",
+    "GM: You focus your attention on the villagers, trying to gauge their emotions and pick up any subtle cues. You roll a Wisdom (Insight) check: *rolls a d20* and adds your Wisdom modifier.\n\nThe total result is 16 (+3). With your Insight, you notice that some of the villagers are genuinely concerned about the missing Starlight's Tear, while others seem to be hiding something or struggling with their own motivations. You sense a mix of anxiety, frustration, and desperation among them.\n\nOne villager in particular catches your attention: a young woman named Lila, who seems nervous and agitated. She keeps glancing at the forest, as if she's worried about something lurking just out of sight. Her eyes also seem to be darting towards Grimbold, who appears oblivious to her gaze.\n\nAdditionally, you notice that some villagers are whispering among themselves, sharing rumors or theories about the fey and their involvement in the missing herb. The whispers are hushed, but you can't help but wonder what they're really discussing.\n\nThe Whispering Woods seem to be watching you, too. The wind carries an unsettling, almost mournful sigh that sends shivers down your spine. It's as if the woods themselves are waiting for something \u2013 or someone \u2013 to happen next.\n\nWhat would you like to do next?"
+  ]
+}
