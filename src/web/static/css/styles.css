@@ -1,0 +1,120 @@
+/* Base button styles */
+.btn-primary {
+    @apply bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50;
+}
+
+.btn-secondary {
+    @apply bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50;
+}
+
+.btn-danger {
+    @apply bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50;
+}
+
+/* Chat message styles */
+.message {
+    @apply p-4 rounded-lg flex items-start space-x-4;
+}
+
+.message-gm {
+    @apply bg-gray-100;
+}
+
+.message-player {
+    @apply bg-blue-50;
+}
+
+.message-companion {
+    @apply bg-green-50;
+}
+
+.avatar {
+    @apply w-12 h-12 rounded-full ring-2 ring-gray-200;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.avatar-gm {
+    @apply ring-blue-400;
+}
+
+.avatar-player {
+    @apply ring-green-400;
+}
+
+.avatar-companion {
+    @apply ring-yellow-400;
+}
+
+.message-content {
+    @apply flex-1;
+}
+
+/* Quest styles */
+.quest-item {
+    @apply p-4 rounded-lg border border-gray-200 hover:bg-gray-50;
+}
+
+.quest-active {
+    @apply border-blue-500 bg-blue-50;
+}
+
+/* Alert text styles */
+.text-danger {
+    @apply text-red-600 font-bold;
+}
+
+.text-warning {
+    @apply text-yellow-600 font-bold;
+}
+
+.text-info {
+    @apply text-blue-600 font-bold;
+}
+
+/* Quest options */
+.quest-option {
+    @apply p-2 rounded border border-gray-300 hover:bg-gray-100 cursor-pointer flex justify-between items-center;
+}
+
+.quest-option-button {
+    @apply bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600;
+}
+
+/* Location styles */
+.location-item {
+    @apply p-2 rounded bg-gray-100 text-sm;
+}
+
+.location-current {
+    @apply border-l-4 border-blue-500 pl-2;
+}
+
+/* Scrollbar styles */
+#chat-messages {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+#chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+#chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#chat-messages::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 rounded;
+}
+
+/* Animation */
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
